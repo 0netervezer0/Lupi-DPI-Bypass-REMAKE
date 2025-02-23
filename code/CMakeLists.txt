@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-set(CMAKE_AUTOMOC ON)  # Автоматическая обработка MOC
+set(CMAKE_AUTOMOC ON)
 
 add_executable(LupiDPI main.cpp)
 target_link_libraries(LupiDPI PRIVATE Qt6::Widgets)
