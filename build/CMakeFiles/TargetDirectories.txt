@@ -1,5 +1,0 @@
-/Users/netervezer/Projects/Lupi_DPI_Bypass_(Powered_CPP-Qt)/code/build/CMakeFiles/LupiDPI.dir
-/Users/netervezer/Projects/Lupi_DPI_Bypass_(Powered_CPP-Qt)/code/build/CMakeFiles/edit_cache.dir
-/Users/netervezer/Projects/Lupi_DPI_Bypass_(Powered_CPP-Qt)/code/build/CMakeFiles/rebuild_cache.dir
-/Users/netervezer/Projects/Lupi_DPI_Bypass_(Powered_CPP-Qt)/code/build/CMakeFiles/LupiDPI_autogen_timestamp_deps.dir
-/Users/netervezer/Projects/Lupi_DPI_Bypass_(Powered_CPP-Qt)/code/build/CMakeFiles/LupiDPI_autogen.dir
