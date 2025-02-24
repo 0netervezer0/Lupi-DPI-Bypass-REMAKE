@@ -1,7 +1,8 @@
-// Lupi DPI Bypass 0.0.1
+// Lupi DPI Bypass 2.0.1
 // Development for Windows (x64)
-// Builded and powered on MacOS (Apple Silicon) (or any other ARM Unix)
-// Use -- <sh compile.sh> -- in your terminal to compile
+
+// Use -- <sh compile.sh> -- in your terminal to compile (Linux/MacOS) (Powered by CMake)
+// Use -- <qmake main.pro & mingw32-make> -- in your cmd to compile (Windows) (Powered by QMake)
 
 #include <QApplication>
 #include <QWidget>
@@ -13,6 +14,8 @@
 #include <QEvent>
 #include <QPainter>
 #include <QStyleOption>
+#include <QIcon>
+#include <QProcess>
 
 class LupiDPI : public QWidget {
 
@@ -32,6 +35,8 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
 
     setFixedSize( 320, 520 );
     setWindowTitle( "Lupi DPI Bypass" );
+    setWindowIcon( QIcon( ":/icon.ico" ));
+
     setStyleSheet( R"(
         QWidget {
             background-color: #2E3440;
