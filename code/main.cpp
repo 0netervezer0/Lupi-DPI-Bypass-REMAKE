@@ -16,6 +16,9 @@
 #include <QStyleOption>
 #include <QIcon>
 #include <QProcess>
+#include <QDesktopServices>
+#include <QDir>
+#include <QUrl>
 
 class LupiDPI : public QWidget {
 
@@ -29,6 +32,7 @@ protected:
 
 private:
     void animateButton( QPushButton *button, const QColor &hoverColor );
+    void executeCommand( const QString &command );
 };
 
 LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
@@ -148,19 +152,19 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
     altStarts -> setVisible( true );
 
     connect( infoBtn, &QPushButton::clicked, this, []() {
-        QMessageBox::information( nullptr, "Guide", "Guide" );
+        QDesktopServices::openUrl( QUrl::fromLocalFile( QDir::currentPath() + "/guide.html" ) );
     } );
 
     connect( openBtn, &QPushButton::clicked, this, []() {
-        // 
+        system( "explorer.exe DPI" );
     } );
 
     connect( addressBtn, &QPushButton::clicked, this, []() {
-        // 
+        QDesktopServices::openUrl( QUrl::fromLocalFile( QDir::currentPath() + "/DPI/list-general.txt" ) );
     } );
 
     connect( startBtn, &QPushButton::clicked, [startBtn, stopBtn, installBtn, 
-            removeBtn, addressBtn, openBtn, altStarts]() {
+            removeBtn, addressBtn, openBtn, altStarts, this]() {
         startBtn -> setVisible( false ); 
         stopBtn -> setVisible( true ); 
 
@@ -170,6 +174,9 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
         openBtn -> setVisible( false );
         
         altStarts->setVisible( false );
+
+        QString selectedBatFile = altStarts -> currentData().toString();
+        executeCommand( "cd DPI & " + selectedBatFile );
     } );
 
     connect( stopBtn, &QPushButton::clicked, [startBtn, stopBtn, installBtn, 
@@ -183,6 +190,16 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
         openBtn -> setVisible( true );
 
         altStarts->setVisible( true );
+
+        // task kill
+    } );
+
+    connect( installBtn, &QPushButton::clicked, this, [this]() {
+        system( "cd DPI & service_install.bat" );
+    } );
+
+    connect( removeBtn, &QPushButton::clicked, this, [this]() {
+        system( "cd DPI & service_remove.bat" );
     } );
 
     startBtn -> installEventFilter( this );
@@ -213,6 +230,19 @@ void LupiDPI::animateButton( QPushButton *button, const QColor &targetColor ) {
     animation -> setStartValue( button -> palette().button().color() );
     animation -> setEndValue( targetColor );
     animation -> start( QAbstractAnimation::DeleteWhenStopped );
+}
+
+void LupiDPI::executeCommand( const QString &command ) {
+    QString fullPath = QDir::currentPath() + "/DPI/" + command;
+    qDebug() << "Executing command:" << fullPath;
+
+    QProcess *process = new QProcess( this );
+    process -> setWorkingDirectory( QDir::currentPath() + "/DPI" );
+    process -> start( "cmd.exe", { "/c", command } );
+
+    connect( process, QOverload<QProcess::ProcessError>::of( &QProcess::errorOccurred ), []( QProcess::ProcessError error ) {
+        QMessageBox::critical( nullptr, "Error", "Failed to execute the command." );
+    } );
 }
 
 int main( int argc, char *argv[] ) {
