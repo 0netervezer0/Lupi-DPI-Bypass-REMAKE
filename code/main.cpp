@@ -123,7 +123,6 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
 
     QPushButton *installBtn = new QPushButton( "Install Bypass Service" );
     QPushButton *removeBtn = new QPushButton( "Remove Bypass Service" );
-    QPushButton *stopBtn = new QPushButton( "Stop DPI Bypass" );
 
     QPushButton *addressBtn = new QPushButton( "Open Address List" );
     QPushButton *openBtn = new QPushButton( "Open Bin Folder" );
@@ -131,7 +130,6 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
 
     installBtn -> setCursor( Qt::PointingHandCursor );
     removeBtn -> setCursor( Qt::PointingHandCursor );
-    stopBtn -> setCursor( Qt::PointingHandCursor );
     addressBtn -> setCursor( Qt::PointingHandCursor );
     openBtn -> setCursor( Qt::PointingHandCursor );
     infoBtn -> setCursor( Qt::PointingHandCursor );
@@ -142,13 +140,11 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
     layout -> addWidget( installBtn );
     layout -> addWidget( removeBtn );
     layout -> addSpacing( 20 );
-    layout -> addWidget( stopBtn );
     layout -> addWidget( addressBtn );
     layout -> addSpacing( 20 ); 
     layout -> addWidget( openBtn );
     layout -> addWidget( infoBtn );
 
-    stopBtn -> setVisible( false );
     altStarts -> setVisible( true );
 
     connect( infoBtn, &QPushButton::clicked, this, []() {
@@ -163,35 +159,10 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
         QDesktopServices::openUrl( QUrl::fromLocalFile( QDir::currentPath() + "/DPI/list-general.txt" ) );
     } );
 
-    connect( startBtn, &QPushButton::clicked, [startBtn, stopBtn, installBtn, 
+    connect( startBtn, &QPushButton::clicked, [startBtn, installBtn, 
             removeBtn, addressBtn, openBtn, altStarts, this]() {
-        startBtn -> setVisible( false ); 
-        stopBtn -> setVisible( true ); 
-
-        installBtn -> setVisible( false );
-        removeBtn -> setVisible( false );
-        addressBtn -> setVisible( false );
-        openBtn -> setVisible( false );
-        
-        altStarts->setVisible( false );
-
         QString selectedBatFile = altStarts -> currentData().toString();
         executeCommand( "cd DPI & " + selectedBatFile );
-    } );
-
-    connect( stopBtn, &QPushButton::clicked, [startBtn, stopBtn, installBtn, 
-            removeBtn, addressBtn, openBtn, altStarts]() {
-        startBtn -> setVisible( true );
-        stopBtn -> setVisible( false );
-
-        installBtn -> setVisible( true );
-        removeBtn -> setVisible( true );
-        addressBtn -> setVisible( true );
-        openBtn -> setVisible( true );
-
-        altStarts->setVisible( true );
-
-        // task kill
     } );
 
     connect( installBtn, &QPushButton::clicked, this, [this]() {
@@ -205,7 +176,6 @@ LupiDPI::LupiDPI( QWidget *parent ) : QWidget( parent ) {
     startBtn -> installEventFilter( this );
     installBtn -> installEventFilter( this );
     removeBtn -> installEventFilter( this );
-    stopBtn -> installEventFilter( this );
     addressBtn -> installEventFilter( this );
     openBtn -> installEventFilter( this );
     infoBtn -> installEventFilter( this );
